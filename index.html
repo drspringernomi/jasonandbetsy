@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Since We Met</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-rose-100 to-teal-100 flex items-center justify-center min-h-screen p-4">
+    <main class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-2xl p-6 md:p-12 text-center max-w-3xl w-full">
+        <h1 class="playfair text-4xl md:text-6xl text-rose-800 mb-4">Our Journey So Far</h1>
+        <p class="text-gray-600 mb-8 text-lg">Counting the moments since April 15, 1995</p>
+
+        <!-- Container for the time counter -->
+        <div id="time-counter" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-10">
+            <div class="bg-rose-50 p-6 rounded-xl shadow-md">
+                <span id="years" class="block text-5xl font-bold text-rose-600">0</span>
+                <span class="text-gray-500">Years</span>
+            </div>
+            <div class="bg-rose-50 p-6 rounded-xl shadow-md">
+                <span id="days" class="block text-5xl font-bold text-rose-600">0</span>
+                <span class="text-gray-500">Days</span>
+            </div>
+            <div class="bg-rose-50 p-6 rounded-xl shadow-md">
+                <span id="hours" class="block text-5xl font-bold text-rose-600">0</span>
+                <span class="text-gray-500">Hours</span>
+            </div>
+            <div class="bg-rose-50 p-6 rounded-xl shadow-md">
+                <span id="minutes" class="block text-5xl font-bold text-rose-600">0</span>
+                <span class="text-gray-500">Minutes</span>
+            </div>
+            <div class="bg-rose-50 p-6 rounded-xl shadow-md">
+                <span id="seconds" class="block text-5xl font-bold text-rose-600">00</span>
+                <span class="text-gray-500">Seconds</span>
+            </div>
+        </div>
+
+        <!-- Scrolling message -->
+        <div class="bg-white/50 rounded-lg overflow-hidden p-3">
+             <marquee class="text-2xl text-rose-700 font-semibold" behavior="scroll" direction="left" scrollamount="6">
+                💖 I love you more each minute. 🐧 I love you more each minute. 💖 I love you more each minute. 🐧
+            </marquee>
+        </div>
+    </main>
+
+    <script>
+        // Set the date we're counting from
+        const startDate = new Date('1995-04-15T00:00:00');
+
+        function updateCounter() {
+            const now = new Date();
+            
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+
+            if (months < 0 || (months === 0 && days < 0)) {
+                years--;
+                months += 12;
+            }
+
+            // This is a more intuitive calculation for the remaining days, hours, and minutes.
+            // We calculate the anniversary date for the current year.
+            let lastAnniversary = new Date(startDate);
+            lastAnniversary.setFullYear(now.getFullYear());
+            
+            if (now < lastAnniversary) {
+                 lastAnniversary.setFullYear(now.getFullYear() - 1);
+            }
+
+            let diff = now - lastAnniversary;
+
+            let totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            let totalHours = now.getHours();
+            let totalMinutes = now.getMinutes();
+            let totalSeconds = now.getSeconds();
+
+            // Update the HTML elements
+            document.getElementById('years').textContent = years;
+            document.getElementById('days').textContent = totalDays;
+            document.getElementById('hours').textContent = totalHours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = totalMinutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = totalSeconds.toString().padStart(2, '0');
+        }
+
+        // Run the function every second to keep the counter live
+        setInterval(updateCounter, 1000);
+
+        // Run the function once on page load to avoid initial delay
+        updateCounter();
+    </script>
+</body>
+</html>
+
